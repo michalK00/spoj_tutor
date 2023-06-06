@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tasks</title>
+</head>
+<body>
+    <h1>Tasks</h1>
+
+    <table border="1">
+      <thead>
+        <tr>
+          <th>Task</th>
+          <th>Source</th>
+          <th>Url</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for task in tasks %}
+          <tr>
+            <td>
+              {{ task.name }}
+            </td>
+            <td>{{ task.source }}</td>
+            <td><a href={{ task.url }} target="_blank" rel="noopener noreferrer">link</a></td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+</body>
+</html>
