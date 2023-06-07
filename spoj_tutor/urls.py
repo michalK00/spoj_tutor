@@ -19,8 +19,7 @@ from django.urls import include, path
 from tasks import views
 
 urlpatterns = [
-    path('tasks/', views.tasks, name='tasks'),
-    path('tasks/<int:task_id>', views.single_task, name="single_task"),
+    path("tasks/", include("tasks.urls")),
     path("admin/", admin.site.urls),
 
 ]
