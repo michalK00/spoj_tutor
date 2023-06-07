@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404, render
 # Create your views here.
 def tasks(request):
     all_tasks = Task.objects.all()
-    return render(request, 'home.html', {'tasks': all_tasks})
+    return render(request, 'tasks.html', {'tasks': all_tasks})
 
 
 def single_task(request, task_id):
