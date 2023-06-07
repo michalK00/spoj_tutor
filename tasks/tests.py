@@ -8,14 +8,22 @@ from .models import Task
 
 
 class HomeTests(TestCase):
-    def test_home_view_status_code(self):
+    def setUp(self):
+        self.task = Task.objects.create(name="Two sum", source="leetcode",
+                            url="https://leetcode.com/problems/palindrome-linked-list/", task_content="None")
         url = reverse('tasks')
-        response = self.client.get(url)
-        self.assertEquals(response.status_code, 200)
+        self.response = self.client.get(url)
+
+    def test_home_view_status_code(self):
+        self.assertEquals(self.response.status_code, 200)
 
     def test_tasks_url_resolves_tasks_view(self):
         view = resolve('/tasks/')
         self.assertEquals(view.func, tasks)
+
+    def test_tasks_view_contains_link_to_single_task_page(self):
+        single_task_url = reverse('single_task', kwargs={'task_id': self.task.pk})
+        self.assertContains(self.response, 'href="{0}"'.format(single_task_url))
 
 
 class TaskTests(TestCase):
