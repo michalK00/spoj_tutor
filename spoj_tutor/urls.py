@@ -19,6 +19,10 @@ from django.urls import include, path
 from tasks import views
 
 urlpatterns = [
+    path('tasks/', views.tasks, name='tasks'),
+    path('tasks/<int:task_id>', views.single_task, name="single_task"),
     path("admin/", admin.site.urls),
-    path('', views.home, name='home'),
+
 ]
+
+handler404 = "tasks.views.page_not_found"
