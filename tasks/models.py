@@ -5,11 +5,28 @@ from django.contrib.auth.models import User
 # Create your models here.
 # It's still just a concept
 
+class Spoj(models.Model):
+    name = models.CharField(max_length=255, primary_key=True)
+    amount_of_difficulty_levels = models.IntegerField(null=False, blank=False)
+
+    def __str__(self):
+        return self.name
+
+
 class Task(models.Model):
-    name = models.CharField(max_length=25)
-    source = models.CharField(max_length=25)
-    url = models.URLField(max_length=200)
-    task_content = models.CharField(max_length=500)
+    id = models.AutoField(primary_key=True)
+    difficulty = models.PositiveIntegerField()
+
+    name = models.CharField(max_length=125)
+    spoj = models.ForeignKey(Spoj, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('name', 'spoj')
+
+    # blank=True <- not required in forms
+    # null=True <- can be null in db
+    url = models.URLField(max_length=200, blank=True, null=True)
+    solution_url = models.URLField(max_length=200, blank=True, null=True)
 
     def __str__(self):
         return self.name
