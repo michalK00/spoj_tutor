@@ -9,9 +9,12 @@
 <body>
     <div class="container bg-dark-subtle rounded">
         <ol class="breadcrumb my-4">
+            <li class="breadcrumb-item">{{ task.id }}</li>
+            <li class="breadcrumb-item">{{ task.difficulty }}</li>
             <li class="breadcrumb-item">{{ task.name }}</li>
-            <li class="breadcrumb-item">{{ task.task_content }}</li>
+            <li class="breadcrumb-item">{{ task.spoj.name }}</li>
             <li class="breadcrumb-item">{{ task.url }}</li>
+            <li class="breadcrumb-item">{{ task.solution_url }}</li>
         </ol>
     </div>
 

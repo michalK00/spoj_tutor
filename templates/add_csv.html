@@ -1,0 +1,24 @@
+{% extends 'admin/base.html' %}
+
+{% block content %}
+  <h2>Add a CSV file and a SPOJ to add to database</h2>
+  <form method="POST" enctype="multipart/form-data" action="{% url 'add_records_from_csv' %}">
+    {% csrf_token %}
+    
+    <label for="file">Choose a file:</label>
+    <input type="file" id="file_input" name="file_input" required>
+    
+    <br><br>
+    
+    <label for="spoj">Select a SPOJ:</label>
+    <select id="spoj" name="spoj" required>
+      {% for item in spojs %}
+        <option value="{{ item.name }}">{{ item.name }}</option>
+      {% endfor %}
+    </select>
+    
+    <br><br>
+
+    <button type="submit">Add records to database</button>
+  </form>
+{% endblock %}
