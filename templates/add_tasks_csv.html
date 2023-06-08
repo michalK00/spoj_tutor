@@ -10,8 +10,8 @@
         <div class="col-lg-8 col-md-10 col-sm-12">
             <div class="card">
                 <div class="card-body">
-                    <h3 class="card-title">Add a CSV file and a SPOJ to add to database</h3>
-                    <form method="post" novalidate>
+                    <h3 class="card-title">Load tasks from .csv file</h3>
+                    <form method="post" enctype="multipart/form-data" novalidate>
                         {% csrf_token %}
                         {% include 'includes/form.html' %}
                         <button type="submit" class="btn btn-dark mt-4">Add Tasks</button>

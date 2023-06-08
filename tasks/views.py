@@ -22,8 +22,9 @@ def page_not_found(request, exception):
 
 def add_tasks_from_csv(request):
     if request.method == "POST":
-        form = AddFromCSVForm(request.POST)
+        form = AddFromCSVForm(request.POST, request.FILES)
         if form.is_valid():
+
             # needs implementation
             return redirect('admin:index')
     else:
