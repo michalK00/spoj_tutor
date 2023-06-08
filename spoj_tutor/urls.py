@@ -17,13 +17,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from accounts import views as account_views
-from tasks import views as task_views
+from admin_extension import views as admin_views
 
 urlpatterns = [
     path("tasks/", include("tasks.urls")),
     path("signup/", account_views.signup, name="signup"),
-    path("admin/add_tasks", task_views.add_tasks_from_csv, name='add_tasks'),
-    path("admin/", admin.site.urls),
+    path("admin/", include("admin_extension.urls")),
 
 
 ]

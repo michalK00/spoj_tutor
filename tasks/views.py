@@ -1,8 +1,5 @@
-from django.http import HttpResponse
-from .models import Task, Spoj
-from django.shortcuts import get_object_or_404, render, redirect, reverse
-from .forms import AddFromCSVForm
-from spoj_tutor import urls
+from .models import Task
+from django.shortcuts import get_object_or_404, render
 
 
 # Create your views here.
@@ -20,14 +17,4 @@ def page_not_found(request, exception):
     return render(request, '404.html', status=404)
 
 
-def add_tasks_from_csv(request):
-    if request.method == "POST":
-        form = AddFromCSVForm(request.POST, request.FILES)
-        if form.is_valid():
 
-            # needs implementation
-            return redirect('admin:index')
-    else:
-        form = AddFromCSVForm()
-    # TODO: add file parsing, database modification and tests
-    return render(request, 'add_tasks_csv.html', {'form': form})

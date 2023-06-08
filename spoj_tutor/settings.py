@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "tasks",
     "accounts",
     "widget_tweaks",
+    "admin_extension",
 ]
 
 MIDDLEWARE = [

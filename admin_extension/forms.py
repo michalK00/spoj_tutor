@@ -1,5 +1,5 @@
 from django import forms
-from .models import Spoj
+from tasks.models import Spoj
 from django.core.validators import FileExtensionValidator
 
 choices = [(choice, spoj) for choice, spoj in enumerate(Spoj.objects.all())]
