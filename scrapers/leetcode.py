@@ -1,13 +1,14 @@
 # inspired by https://github.com/Bishalsarang/Leetcode-Questions-Scraper/blob/master/main.py
 import json
-from typing import Any, List
+from typing import Any, List, Tuple
 import requests
 
-from utils import TaskRepresentation, get_amount_and_normalize_difficulty
+from utils import *
 
 # Leetcode API URL to get json of problems on algorithms categories
 ALGORITHMS_ENDPOINT_URL = "https://leetcode.com/api/problems/algorithms/"
 ALGORITHMS_BASE_URL = "https://leetcode.com/problems/"
+LEETCODE_FILENAME = "leetcode.csv"
 
 # Load JSON from API
 algorithms_problems_json = json.loads(requests.get(ALGORITHMS_ENDPOINT_URL).content)
@@ -24,7 +25,7 @@ def get_editorial_url(child: Any) -> str | None:
     return None
 
 
-def main():
+def get_all_task_objs() -> Tuple[int, List[TaskRepresentation]]:
     questions: List[TaskRepresentation] = []
 
     for child in algorithms_problems_json["stat_status_pairs"]:
@@ -34,20 +35,23 @@ def main():
         questions.append(
             TaskRepresentation(
                 difficulty=child["difficulty"]["level"],
-                id_num=child["stat"]["frontend_question_id"],
                 title=child["stat"]["question__title"],
                 url=get_challenge_url(child),
                 solution_url=get_editorial_url(child),
             )
         )
 
-    get_amount_and_normalize_difficulty(questions)
+    difficulty_levels_amount = get_amount_and_normalize_difficulty(questions)
 
-    # Sort by problem id in ascending order and then by difficulty
-    questions = sorted(questions, key=lambda x: (x[2], x[1]))
+    # Sort by problem name in ascending order and then by difficulty
+    questions = sorted(questions, key=lambda x: (x.title, x.difficulty))
 
-    for i in questions:
-        print(i)
+    return difficulty_levels_amount, questions
+
+
+def main() -> None:
+    difficulty_levels_amount, tasks = get_all_task_objs()
+    tasks_to_csv(LEETCODE_FILENAME, tasks)
 
 
 if __name__ == "__main__":

@@ -1,9 +1,9 @@
 from typing import List, Dict
+import csv
 
 
 class TaskRepresentation:
     difficulty: int
-    id: int
     title: str
     url: str
     solution_url: str
@@ -11,13 +11,11 @@ class TaskRepresentation:
     def __init__(
             self,
             difficulty: int,
-            id_num: int,
             title: str,
             url: str,
             solution_url: str,
     ):
         self.difficulty = difficulty
-        self.id = id_num
         self.title = title
         self.url = url
         self.solution_url = solution_url
@@ -25,7 +23,6 @@ class TaskRepresentation:
     def __str__(self):
         return (
             f"difficulty: {self.difficulty}; "
-            f"id:{self.id}; "
             f"title: {self.title}; "
             f"url: {self.url}; "
             f"solution: {self.solution_url}"
@@ -51,7 +48,9 @@ def get_amount_and_normalize_difficulty(
     difficulty_positions: Dict[int:int] = {}
 
     for index, value in enumerate(
-            sorted(set(list_of_difficulties), reverse=is_difficulty_descending)
+            sorted(
+                set(list_of_difficulties),
+                reverse=is_difficulty_descending)
     ):
         difficulty_positions[value] = index
 
@@ -61,3 +60,18 @@ def get_amount_and_normalize_difficulty(
         task.difficulty = difficulty_positions[task.difficulty]
 
     return len(difficulty_positions)
+
+
+def tasks_to_csv(filename: str, tasks: List[TaskRepresentation]) -> None:
+    if len(tasks) <= 0:
+        return
+
+    # Extract the field names from the first object in the list
+    # this is done this way in case the class hsa to be changed
+    fieldnames = tasks[0].__dict__.keys()
+
+    with open(filename, "w", newline="", encoding="utf-8") as file:
+        writer = csv.DictWriter(file, fieldnames=fieldnames)
+        writer.writeheader()
+        for obj in tasks:
+            writer.writerow(obj.__dict__)
