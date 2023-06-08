@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from .models import Task
+from .models import Task, Spoj
 from django.shortcuts import get_object_or_404, render
 
 
@@ -16,3 +16,15 @@ def single_task(request, task_id):
 
 def page_not_found(request, exception):
     return render(request, '404.html', status=404)
+
+
+def spojs(request):
+    all_spojs = Spoj.objects.all()
+    return render(request, 'add_csv.html', {"spojs": all_spojs})
+
+
+def add_records_from_csv(request):
+    if request.method != "POST":
+        return HttpResponse("Failure :c")
+    # TODO: add file parsing, validation and database modification
+    return HttpResponse(request.FILES.get("file_input"))

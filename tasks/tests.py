@@ -10,7 +10,8 @@ from .models import Task
 class HomeTests(TestCase):
     def setUp(self):
         self.task = Task.objects.create(name="Two sum", source="leetcode",
-                            url="https://leetcode.com/problems/palindrome-linked-list/", task_content="None")
+                                        url="https://leetcode.com/problems/palindrome-linked-list/",
+                                        task_content="None")
         url = reverse('tasks')
         self.response = self.client.get(url)
 
@@ -40,6 +41,7 @@ class TaskTests(TestCase):
         url = reverse('single_task', kwargs={'task_id': 100})
         response = self.client.get(url)
         self.assertEquals(response.status_code, 404)
+
     # doesn't work
     # def test_single_task_view_not_found_resolves_404_view(self):
     #     view = resolve('/tasks/99')
@@ -48,4 +50,3 @@ class TaskTests(TestCase):
     def test_single_task_url_resolves_single_task_view(self):
         view = resolve('/tasks/1/')
         self.assertEquals(view.func, single_task)
-

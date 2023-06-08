@@ -1,12 +1,14 @@
 # inspired by https://github.com/Bishalsarang/Leetcode-Questions-Scraper/blob/master/main.py
 import json
-from typing import Any
-
+from typing import Any, List, Tuple
 import requests
+
+from utils import *
 
 # Leetcode API URL to get json of problems on algorithms categories
 ALGORITHMS_ENDPOINT_URL = "https://leetcode.com/api/problems/algorithms/"
 ALGORITHMS_BASE_URL = "https://leetcode.com/problems/"
+LEETCODE_FILENAME = "leetcode.csv"
 
 # Load JSON from API
 algorithms_problems_json = json.loads(requests.get(ALGORITHMS_ENDPOINT_URL).content)
@@ -23,31 +25,33 @@ def get_editorial_url(child: Any) -> str | None:
     return None
 
 
-def main():
-    # List to store question_title_slug
-    links = []
+def get_all_task_objs() -> Tuple[int, List[TaskRepresentation]]:
+    questions: List[TaskRepresentation] = []
+
     for child in algorithms_problems_json["stat_status_pairs"]:
-        # Only process free problems 'if not child["paid_only"]:'
-        question__article__slug = get_editorial_url(child)
-        question__title = child["stat"]["question__title"]
-        frontend_question_id = child["stat"]["frontend_question_id"]
-        difficulty = child["difficulty"]["level"]
-        question_url = get_challenge_url(child)
-        links.append(
-            (
-                difficulty,
-                frontend_question_id,
-                question__title,
-                question_url,
-                question__article__slug,
+        # Only process free problems
+        # if not child["paid_only"]:
+
+        questions.append(
+            TaskRepresentation(
+                difficulty=child["difficulty"]["level"],
+                title=child["stat"]["question__title"],
+                url=get_challenge_url(child),
+                solution_url=get_editorial_url(child),
             )
         )
 
-    # Sort by problem id in ascending order and then by difficulty
-    links = sorted(links, key=lambda x: (x[2], x[1]))
+    difficulty_levels_amount = get_amount_and_normalize_difficulty(questions)
 
-    for i in links:
-        print(i)
+    # Sort by problem name in ascending order and then by difficulty
+    questions = sorted(questions, key=lambda x: (x.title, x.difficulty))
+
+    return difficulty_levels_amount, questions
+
+
+def main() -> None:
+    difficulty_levels_amount, tasks = get_all_task_objs()
+    tasks_to_csv(LEETCODE_FILENAME, tasks)
 
 
 if __name__ == "__main__":
