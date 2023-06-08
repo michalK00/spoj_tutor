@@ -1,8 +1,9 @@
 # inspired by https://github.com/Bishalsarang/Leetcode-Questions-Scraper/blob/master/main.py
 import json
-from typing import Any
-
+from typing import Any, List
 import requests
+
+from utils import TaskRepresentation, get_amount_and_normalize_difficulty
 
 # Leetcode API URL to get json of problems on algorithms categories
 ALGORITHMS_ENDPOINT_URL = "https://leetcode.com/api/problems/algorithms/"
@@ -24,29 +25,28 @@ def get_editorial_url(child: Any) -> str | None:
 
 
 def main():
-    # List to store question_title_slug
-    links = []
+    questions: List[TaskRepresentation] = []
+
     for child in algorithms_problems_json["stat_status_pairs"]:
-        # Only process free problems 'if not child["paid_only"]:'
-        question__article__slug = get_editorial_url(child)
-        question__title = child["stat"]["question__title"]
-        frontend_question_id = child["stat"]["frontend_question_id"]
-        difficulty = child["difficulty"]["level"]
-        question_url = get_challenge_url(child)
-        links.append(
-            (
-                difficulty,
-                frontend_question_id,
-                question__title,
-                question_url,
-                question__article__slug,
+        # Only process free problems
+        # if not child["paid_only"]:
+
+        questions.append(
+            TaskRepresentation(
+                difficulty=child["difficulty"]["level"],
+                id_num=child["stat"]["frontend_question_id"],
+                title=child["stat"]["question__title"],
+                url=get_challenge_url(child),
+                solution_url=get_editorial_url(child),
             )
         )
 
-    # Sort by problem id in ascending order and then by difficulty
-    links = sorted(links, key=lambda x: (x[2], x[1]))
+    get_amount_and_normalize_difficulty(questions)
 
-    for i in links:
+    # Sort by problem id in ascending order and then by difficulty
+    questions = sorted(questions, key=lambda x: (x[2], x[1]))
+
+    for i in questions:
         print(i)
 
 
