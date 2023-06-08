@@ -55,6 +55,9 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "spoj_tutor.urls"
 
+LOGOUT_REDIRECT_URL = "tasks"
+LOGIN_REDIRECT_URL = "tasks"
+
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
