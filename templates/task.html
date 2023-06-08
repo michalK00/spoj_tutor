@@ -1,5 +1,18 @@
 {% extends 'base.html' %}
 
+
+{% block navbar_items %}
+    <li class="nav-item">
+        <a class="nav-link" href="/tasks/">Explore</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#">My Problems</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#">Dashboard</a>
+    </li>
+{% endblock navbar_items %}
+
 {% block content %}
     <div class="container bg-dark-subtle rounded">
         <ol class="breadcrumb my-4">
