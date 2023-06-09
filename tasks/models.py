@@ -3,7 +3,6 @@ from django.contrib.auth.models import User
 
 
 # Create your models here.
-# It's still just a concept
 
 class Spoj(models.Model):
     name = models.CharField(max_length=255, primary_key=True)

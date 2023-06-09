@@ -1,13 +1,13 @@
 from django.test import TestCase
 from django.urls import reverse, resolve
-from .views import tasks, single_task, page_not_found
+from .views import tasks, single_task
 from .models import Task
 
 
 # Create your tests here.
+# TODO: fix tests after new model migration (mainly setUp), split tests between files (like in accounts app)
 
-
-class HomeTests(TestCase):
+class TasksTests(TestCase):
     def setUp(self):
         self.task = Task.objects.create(name="Two sum", source="leetcode",
                                         url="https://leetcode.com/problems/palindrome-linked-list/",
