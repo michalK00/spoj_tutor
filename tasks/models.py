@@ -15,12 +15,11 @@ class Spoj(models.Model):
 class Task(models.Model):
     id = models.AutoField(primary_key=True)
     difficulty = models.PositiveIntegerField()
-
-    name = models.CharField(max_length=125)
+    title = models.CharField(max_length=125)
     spoj = models.ForeignKey(Spoj, on_delete=models.CASCADE)
 
     class Meta:
-        unique_together = ('name', 'spoj')
+        unique_together = ("title", "spoj")
 
     # blank=True <- not required in forms
     # null=True <- can be null in db
@@ -28,7 +27,7 @@ class Task(models.Model):
     solution_url = models.URLField(max_length=200, blank=True, null=True)
 
     def __str__(self):
-        return self.name
+        return self.title
 
 
 class UserTask(models.Model):
