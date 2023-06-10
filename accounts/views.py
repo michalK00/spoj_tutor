@@ -15,15 +15,3 @@ def signup(request):
     else:
         form = SignUpForm()
     return render(request, "accounts/signup.html", {'form': form})
-
-
-def login_view(request):
-    # if request.method == "POST":
-    #     form = LogInForm(request.POST)
-    #     if form.is_valid():
-    #         user = User.
-    #         login(request, user)
-    #         return redirect('tasks')
-    # else:
-    #     form = SignUpForm()
-    return render(request, "accounts/login.html")

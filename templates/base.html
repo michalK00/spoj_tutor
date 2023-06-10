@@ -25,7 +25,7 @@
                         {# TODO: add My Problems and Dashboard view and add their links #}
                         {% block navbar_items %}
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="#">Explore</a>
+                                <a class="nav-link active" aria-current="page" href="{% url 'tasks' %}">Explore</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#">My Problems</a>
@@ -44,7 +44,7 @@
                             <ul class="dropdown-menu dropdown-menu-end">
                                 {# TODO: add my account view, change password functionality and add their links #}
                                 <li><a class="dropdown-item" href="#">My account</a></li>
-                                <li><a class="dropdown-item" href="#">Change password</a></li>
+                                <li><a class="dropdown-item" href="{% url 'password_change' %}">Change password</a></li>
                                 <div class="dropdown-divider"></div>
                                 <li><a class="dropdown-item" href="{% url 'logout' %}">Log out</a></li>
                             </ul>
@@ -59,7 +59,7 @@
             </div>
         </nav>
     {% endblock nav %}
-    <div class="container">
+    <div class="container mx-auto mt-5">
         {% block content %}
         {% endblock %}
     </div>
