@@ -1,11 +1,24 @@
 from .models import Task
 from django.shortcuts import get_object_or_404, render
+from django.views.generic import ListView
+from django.db.models import Count
 
 
 # Create your views here.
-def tasks(request):
-    all_tasks = Task.objects.all()
-    return render(request, 'tasks/tasks.html', {'tasks': all_tasks})
+class TaskListView(ListView):
+    model = Task
+    context_object_name = 'tasks'
+    template_name = 'tasks/tasks.html'
+    paginate_by = 8
+
+    # def get_context_data(self, **kwargs):
+    #     kwargs['task'] = self.task
+    #     return super().get_context_data(**kwargs)
+    #
+    # def get_queryset(self):
+    #     self.task = get_object_or_404(Task, pk=self.kwargs.get('pk'))
+    #     queryset = self.task.order_by('title').annotate(replies=Count('posts') - 1)
+    #     return queryset
 
 
 def single_task(request, task_id):
