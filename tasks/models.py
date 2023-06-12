@@ -34,6 +34,6 @@ class UserTask(models.Model):
     task_id = models.ForeignKey(Task, related_name="user_tasks", on_delete=models.CASCADE)
     user_id = models.ForeignKey(User, related_name="user_tasks", on_delete=models.CASCADE)
     # still don't know if we're going to keep the user_solution field
-    user_solution = models.CharField(max_length=1000)
-    user_note = models.CharField(max_length=500)
-    finished_date = models.DateTimeField()
+    user_solution = models.CharField(max_length=1000, blank=True, null=True)
+    user_note = models.CharField(max_length=500, blank=True, null=True)
+    finished_date = models.DateTimeField(blank=True, null=True)
