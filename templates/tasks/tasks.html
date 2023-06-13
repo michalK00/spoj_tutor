@@ -7,87 +7,45 @@
     <link rel="stylesheet" href="{% static 'css/tasks.css' %}">
 {% endblock stylesheet %}
 {% block content %}
-    <table class="table my-2">
-        <thead class="table-dark ">
-        <tr>
-            <th>Task</th>
-            <th>Difficulty</th>
-            <th>Source</th>
-            <th>Url</th>
-            {% if user.is_authenticated %}
-                <th></th>
-            {% endif %}
-        </tr>
-        </thead>
-        <tbody>
-        {% for task in tasks %}
-            <tr>
-                <td class="w-50"><a class="align-middle link-dark" href="{% url 'single_task' task.id %}">{{ task.title }} </a></td>
-                <td class="align-middle">
-                    <div class="diff container-lg rounded-2 gradient-container">{{ task.difficulty | add:1 }}/{{ task.spoj.amount_of_difficulty_levels }}</div>
-                </td>
-                <td class="align-middle">{{ task.spoj }}</td>
-                <td class="align-middle"><a class="link-dark" href={{ task.url }} target="_blank"
-                                            rel="noopener noreferrer">link</a></td>
-                {% if user.is_authenticated %}
 
-                    <td class="align-right"><a class="bp3-align-right btn btn-dark" href="#"
-                    >Add</a></td>
+
+    <div class="container">
+        {% include 'includes/table_nav.html' %}
+        <table class="table-responsive-sm table  table-striped my-2">
+            <thead class="table-dark ">
+            <tr>
+                <th style="width: 50%">Task</th>
+                <th style="width: 15%">Difficulty</th>
+                <th>Source</th>
+                {% if user.is_authenticated %}
+                    <th>Status</th>
                 {% endif %}
             </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    {#TODO: extract paginated form #}
-    {% if is_paginated %}
-        <nav aria-label="Topics pagination" class="mb-4">
-            <ul class="pagination">
-                {% if page_obj.has_previous %}
-                    <li class="page-item">
-                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
-                    </li>
-                {% else %}
-                    <li class="page-item disabled">
-                        <span class="page-link">Previous</span>
-                    </li>
-                {% endif %}
+            </thead>
+            <tbody>
+            {% for task in tasks %}
+                <tr>
+                    <td class="align-middle"><a class="link" href="{% url 'single_task' task.id %}">{{ task.title }} </a></td>
+                    <td class="align-middle">
+                        <div class="diff container-lg rounded-2" id="diff">{{ task.difficulty | add:1 }}/{{ task.spoj.amount_of_difficulty_levels }}</div>
+                    </td>
+                    <td class="align-middle"><a class="link" href={{ task.url }} target="_blank"
+                                                rel="noopener noreferrer">{{ task.spoj }}</a></td>
+                    {% if user.is_authenticated %}
 
-                {% get_proper_elided_page_range paginator page_obj.number as page_range %}
-                {% for i in page_range %}
-                    {% if page_obj.number == i %}
-                        <li class="active page-item">
-                            <span class="page-link">{{ i }}</span>
-                        </li>
-                    {% else %}
-                        {% if i == paginator.ELLIPSIS %}
-                            <li class="page-item">
-                                <span class="page-link">{{ paginator.ELLIPSIS }}</span>
-                            </li>
-                        {% else %}
-                            <li class="page-item">
-                                <a class="page-link" href="?page={{ i }}">{{ i }}</a>
-                            </li>
-                        {% endif %}
+                        <td class="align-right"><a class="bp3-align-right btn btn-dark" href="#"
+                        >Add</a></td>
                     {% endif %}
-                {% endfor %}
-
-                {% if page_obj.has_next %}
-                    <li class="page-item">
-                        <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
-                    </li>
-                {% else %}
-                    <li class="page-item disabled">
-                        <span class="page-link">Next</span>
-                    </li>
-                {% endif %}
-            </ul>
-        </nav>
-    {% endif %}
-
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% include 'includes/table_pagination.html' %}
 {% endblock content %}
 {% block scripts %}
     <script>
-        const difficulty_divs = document.getElementsByClassName('diff container-lg rounded-2 gradient-container')
+        const difficulty_divs = document.getElementsByClassName('diff container-lg rounded-2')
         for (let i = 0; i < difficulty_divs.length; i++) {
             const level = parseInt(difficulty_divs[i].innerText.split('/')[0])
             const all_levels = parseInt(difficulty_divs[i].innerText.split('/')[1])

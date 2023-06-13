@@ -9,7 +9,7 @@ class TaskListView(ListView):
     model = Task
     context_object_name = 'tasks'
     template_name = 'tasks/tasks.html'
-    paginate_by = 8
+    paginate_by = 20
 
     # def get_context_data(self, **kwargs):
     #     kwargs['task'] = self.task

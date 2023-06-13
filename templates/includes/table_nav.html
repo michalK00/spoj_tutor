@@ -1,0 +1,28 @@
+{% load paginator_tags %}
+
+{% if is_paginated %}
+    <nav aria-label="Topics pagination" class="mb-4">
+        <ul class="pagination">
+            {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}"><i
+                            class="bi bi-chevron-left"></i></a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link"><i class="bi bi-chevron-left"></i></span>
+                </li>
+            {% endif %}
+            {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}"> <i
+                            class="bi bi-chevron-right"></i></i> </a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link"> <i class="bi bi-chevron-left"></i> </span>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+{% endif %}
