@@ -1,19 +1,54 @@
 .diff {
-  width: 45%;
-  height: auto;
-  text-align: center;
-  float: left;
+    width: 50%;
+    height: auto;
+    text-align: center;
+    float: left;
 }
+
+.fixed {
+    table-layout: fixed;
+}
+
+.title {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
 .link {
-    color: black;
+    color: #212529;
     text-decoration: none;
+
 }
+
 .link:hover {
     color: #007AFF;
     transition: color 0.5s;
     text-decoration: none;
 }
+
 .link:active {
-    color: black;
+    color: #212529;
     text-decoration: none;
+}
+.icon-grey {
+    color: #212529;
+}
+.row-element {
+    margin: 0 5px 0 5px;
+}
+.row-element-last-right {
+    margin-left: 5px;
+}
+.row-element-last-left {
+    margin-right: 5px;
+}
+.dropdown-icon {
+    font-size: 18px;
+}
+.icon-green {
+    color: #30B65F;
+}
+.icon-yellow {
+    color: #FDCB4A;
 }

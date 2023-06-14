@@ -9,39 +9,55 @@
 {% block content %}
 
 
-    <div class="container">
-        {% include 'includes/table_nav.html' %}
-        <table class="table-responsive-sm table  table-striped my-2">
-            <thead class="table-dark ">
-            <tr>
-                <th style="width: 50%">Task</th>
-                <th style="width: 15%">Difficulty</th>
-                <th>Source</th>
-                {% if user.is_authenticated %}
-                    <th>Status</th>
-                {% endif %}
-            </tr>
-            </thead>
-            <tbody>
-            {% for task in tasks %}
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-12 col-sm-12">
+            {% include 'includes/table_nav.html' %}
+            <table class="fixed table table-striped my-2 align-middle">
+                <thead class="table-dark ">
                 <tr>
-                    <td class="align-middle"><a class="link" href="{% url 'single_task' task.id %}">{{ task.title }} </a></td>
-                    <td class="align-middle">
-                        <div class="diff container-lg rounded-2" id="diff">{{ task.difficulty | add:1 }}/{{ task.spoj.amount_of_difficulty_levels }}</div>
-                    </td>
-                    <td class="align-middle"><a class="link" href={{ task.url }} target="_blank"
-                                                rel="noopener noreferrer">{{ task.spoj }}</a></td>
-                    {% if user.is_authenticated %}
 
-                        <td class="align-right"><a class="bp3-align-right btn btn-dark" href="#"
-                        >Add</a></td>
+                    {% if user.is_authenticated %}
+                        <th style="width: 50%">Task</th>
+                        <th style="width: 20%">Difficulty</th>
+                        <th style="width: 20%">Source</th>
+                        <th style="width: 10%">Status</th>
+                    {% else %}
+                        <th style="width: 55%">Task</th>
+                        <th style="width: 20%">Difficulty</th>
+                        <th style="width: 25%">Source</th>
                     {% endif %}
                 </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                {% for task in tasks %}
+                    <tr>
+                        <td class="title"><a class="link" href="{% url 'single_task' task.id %}">{{ task.title }}</a>
+                        </td>
+                        <td>
+                            <div class="diff container-lg rounded-2" id="diff">
+                                {{ task.difficulty | add:1 }}/{{ task.spoj.amount_of_difficulty_levels }}
+                            </div>
+                        </td>
+                        <td>
+                            <a class="link" href={{ task.url }} target="_blank" rel="noopener noreferrer">
+                                {{ task.spoj }}
+                            </a>
+                        </td>
+                        {% if user.is_authenticated %}
+                            <td class="text-center">
+                                <a class="link" href="#"><i class="bi bi-bookmark-plus" style="font-size: 25px"></i></a>
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% include 'includes/table_pagination.html' %}
+
+
+        </div>
     </div>
-    {% include 'includes/table_pagination.html' %}
+
 {% endblock content %}
 {% block scripts %}
     <script>

@@ -1,28 +1,68 @@
 {% load paginator_tags %}
 
-{% if is_paginated %}
-    <nav aria-label="Topics pagination" class="mb-4">
-        <ul class="pagination">
-            {% if page_obj.has_previous %}
-                <li class="page-item">
-                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}"><i
-                            class="bi bi-chevron-left"></i></a>
-                </li>
-            {% else %}
-                <li class="page-item disabled">
-                    <span class="page-link"><i class="bi bi-chevron-left"></i></span>
-                </li>
-            {% endif %}
-            {% if page_obj.has_next %}
-                <li class="page-item">
-                    <a class="page-link" href="?page={{ page_obj.next_page_number }}"> <i
-                            class="bi bi-chevron-right"></i></i> </a>
-                </li>
-            {% else %}
-                <li class="page-item disabled">
-                    <span class="page-link"> <i class="bi bi-chevron-left"></i> </span>
-                </li>
-            {% endif %}
-        </ul>
-    </nav>
-{% endif %}
+<div class="container text-center gx-0">
+    <div class="d-flex justify-content-end">
+        <div class="row-element">
+            <div class="input-group mb-3">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">Status
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#"><i class="bi bi-plus dropdown-icon"></i> To add</a></li>
+                    <li><a class="dropdown-item" href="#"><i class="bi bi-braces dropdown-icon icon-yellow"></i> In my problems</a></li>
+                    <li><a class="dropdown-item" href="#"><i class="bi bi-check dropdown-icon icon-green"></i> Solved</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="row-element">
+            <div class="input-group mb-3">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">Source
+                </button>
+                <ul class="dropdown-menu">
+                    {% for spoj in spojs %}
+                        <li><a class="dropdown-item" href="#">{{ spoj.name }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="row-element">
+            <div class="input-group">
+                <label class="input-group-text"><i class="bi bi-search icon-grey"></i></label>
+                <input type="text" class="form-control" placeholder="Search tasks"
+                       aria-label="Example text with button addon"
+                       aria-describedby="button-addon1">
+            </div>
+        </div>
+
+        {#onkeyup="myFunction()"#}
+        {% if tasks.has_other_pages %}
+            <div class="row-element-last-right">
+                <nav aria-label="Topics pagination" class="mb-4">
+                    <ul class="pagination">
+                        {% if tasks.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ tasks.previous_page_number }}"><i
+                                        class="bi bi-chevron-left"></i></a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link"><i class="bi bi-chevron-left"></i></span>
+                            </li>
+                        {% endif %}
+                        {% if tasks.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ tasks.next_page_number }}"> <i
+                                        class="bi bi-chevron-right"></i></i> </a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link"> <i class="bi bi-chevron-right"></i> </span>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        {% endif %}
+    </div>
+</div>

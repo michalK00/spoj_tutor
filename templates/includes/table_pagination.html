@@ -1,9 +1,10 @@
 {% load paginator_tags %}
+{% load static %}
 
-{% if is_paginated %}
-    <nav aria-label="Topics pagination" class="mb-4">
-        <ul class="pagination">
-            {% if page_obj.has_previous %}
+{% if tasks.has_other_pages %}
+    <nav aria-label="Tasks pagination" class="mb-4">
+        <ul class="pagination justify-content-end">
+            {% if tasks.has_previous %}
                 <li class="page-item">
                     <a class="page-link" href="?page={{ page_obj.previous_page_number }}"><i
                             class="bi bi-chevron-left"></i></a>
@@ -14,8 +15,8 @@
                 </li>
             {% endif %}
 
-            {% get_proper_elided_page_range paginator page_obj.number as page_range %}
-            {% for i in page_range %}
+            {% get_proper_elided_page_range tasks.paginator tasks.number as page_range %}
+            {% for i in tasks.paginator.get_elided_page_range %}
                 {% if page_obj.number == i %}
                     <li class="active page-item">
                         <span class="page-link">{{ i }}</span>
@@ -33,7 +34,7 @@
                 {% endif %}
             {% endfor %}
 
-            {% if page_obj.has_next %}
+            {% if tasks.has_next %}
                 <li class="page-item">
                     <a class="page-link" href="?page={{ page_obj.next_page_number }}"><i
                             class="bi bi-chevron-right"></i></a>

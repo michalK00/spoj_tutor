@@ -1,24 +1,30 @@
-from .models import Task
+from .models import Task, Spoj
 from django.shortcuts import get_object_or_404, render
-from django.views.generic import ListView
-from django.db.models import Count
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.shortcuts import render
 
 
 # Create your views here.
-class TaskListView(ListView):
-    model = Task
-    context_object_name = 'tasks'
-    template_name = 'tasks/tasks.html'
-    paginate_by = 20
+def task(request):
 
-    # def get_context_data(self, **kwargs):
-    #     kwargs['task'] = self.task
-    #     return super().get_context_data(**kwargs)
-    #
-    # def get_queryset(self):
-    #     self.task = get_object_or_404(Task, pk=self.kwargs.get('pk'))
-    #     queryset = self.task.order_by('title').annotate(replies=Count('posts') - 1)
-    #     return queryset
+    task_list = Task.objects.all()
+    spojs = Spoj.objects.all()
+    queryset = task_list.order_by('title')
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(queryset, 20)
+
+    try:
+        tasks = paginator.page(page)
+    except PageNotAnInteger:
+        # fallback to the first page
+        tasks = paginator.page(1)
+    except EmptyPage:
+        # probably the user tried to add a page number
+        # in the url, so we fallback to the last page
+        tasks = paginator.page(paginator.num_pages)
+
+    return render(request, 'tasks/tasks.html', {'tasks': tasks, 'spojs': spojs})
 
 
 def single_task(request, task_id):
@@ -28,6 +34,3 @@ def single_task(request, task_id):
 
 def page_not_found(request, exception):
     return render(request, '404.html', status=404)
-
-
-
