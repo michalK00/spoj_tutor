@@ -1,4 +1,4 @@
-from .models import Task
+from .models import Task, UserTask
 from django.shortcuts import get_object_or_404, render
 from django.views.generic import ListView
 from django.db.models import Count
@@ -21,6 +21,13 @@ class TaskListView(ListView):
     #     return queryset
 
 
+class UserTaskListView(ListView):
+    model = UserTask
+    context_object_name = 'user_tasks'
+    template_name = 'tasks/user_tasks.html'
+    paginate_by = 20
+
+
 def single_task(request, task_id):
     found_task = get_object_or_404(Task, pk=task_id)
     return render(request, 'tasks/task.html', {'task': found_task})
@@ -28,6 +35,3 @@ def single_task(request, task_id):
 
 def page_not_found(request, exception):
     return render(request, '404.html', status=404)
-
-
-

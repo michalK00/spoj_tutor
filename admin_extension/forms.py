@@ -3,6 +3,7 @@ from django.core.exceptions import ValidationError
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.core.validators import FileExtensionValidator
 from django.db.models import Model
+import re
 
 from tasks.models import Spoj, Task
 from typing import List, Type
@@ -13,6 +14,8 @@ unwanted_in_tasks = ["id", "spoj", "user_tasks"]
 model_fields = [
     f.name for f in Task._meta.get_fields() if f.name not in unwanted_in_tasks
 ]
+
+split_pattern = re.compile(r',(?=(?:(?:[^"]*"){2})*[^"]*$)')
 
 
 def check_same_strings(list1: List[str], list2: List[str]) -> bool:
@@ -37,14 +40,15 @@ def validate_csv(file: InMemoryUploadedFile) -> None:
     if len(lines) <= 0:
         raise ValidationError("File cannot be empty!")
 
-    csv_fields = lines[0].decode().strip().split(",")
+    csv_fields = re.split(split_pattern, lines[0].decode().strip())
 
     if not check_same_strings(csv_fields, model_fields):
-        raise ValidationError("Incorrect headers!")
+        raise ValidationError(f"Incorrect headers! Expected: {model_fields} got: {csv_fields}")
     for index, line in enumerate(lines[1:]):
-        fields = line.decode().replace("\r\n", "").split(",")
+        fields = re.split(split_pattern, line.decode().replace("\r\n", ""))
         if len(fields) != len(csv_fields):
-            raise ValidationError(f"Incorrect line length at line {index + 2}")
+            raise ValidationError(
+                f"Incorrect line length at line {index + 2}, expected: {len(csv_fields)}, got: {len(fields)}, {fields}")
 
         # Checks argument types
         for idx, field in enumerate(fields):

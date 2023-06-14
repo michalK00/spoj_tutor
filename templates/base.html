@@ -29,7 +29,7 @@
                                 <a class="nav-link active" aria-current="page" href="{% url 'tasks' %}">Explore</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">My Problems</a>
+                                <a class="nav-link" href="{%  url 'user_tasks' %}">My Problems</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#">Dashboard</a>
@@ -43,8 +43,7 @@
                                 {{ user.username }}
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end">
-                                {# TODO: add my account view, change password functionality and add their links #}
-                                <li><a class="dropdown-item" href="#">My account</a></li>
+                                <li><a class="dropdown-item" href="{% url 'my_account' %}">My account</a></li>
                                 <li><a class="dropdown-item" href="{% url 'password_change' %}">Change password</a></li>
                                 <div class="dropdown-divider"></div>
                                 <li><a class="dropdown-item" href="{% url 'logout' %}">Log out</a></li>

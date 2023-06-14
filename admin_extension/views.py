@@ -1,6 +1,8 @@
+import re
+
 from django.db import transaction
 from django.shortcuts import render, redirect
-from .forms import AddFromCSVForm, choices
+from .forms import AddFromCSVForm, choices, split_pattern, model_fields
 from django.contrib.admin.views.decorators import staff_member_required
 
 from tasks.models import Task
@@ -10,7 +12,7 @@ from tasks.models import Task
 @staff_member_required()
 def add_tasks_from_csv(request):
     def return_form():
-        return render(request, "admin/add_tasks_csv.html", {"form": form})
+        return render(request, "admin/add_tasks_csv.html", {"form": form, "model_fields": ", ".join(model_fields)})
 
     if request.method != "POST":
         form = AddFromCSVForm()
@@ -27,11 +29,11 @@ def add_tasks_from_csv(request):
 
         lines = file.readlines()
 
-        csv_fields = lines[0].decode().strip().split(",")
+        csv_fields = re.split(split_pattern, lines[0].decode().replace("\r\n", ""))
         csv_fields.append("spoj")
 
         for line in lines[1:]:
-            fields = line.decode().replace("\r\n", "").split(",")
+            fields = re.split(split_pattern, line.decode().replace("\r\n", '').replace('"', ''))
             fields.append(choices[int(form.cleaned_data["spoj"])][1])
 
             normalized_fields = [None if elem == "" else elem for elem in fields]

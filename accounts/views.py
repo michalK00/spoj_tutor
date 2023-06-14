@@ -3,6 +3,12 @@ from django.contrib.auth import login
 from django.contrib.auth.models import User
 from .forms import SignUpForm
 
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
+from django.views.generic import UpdateView
+
 
 # Create your views here.
 def signup(request):
@@ -15,3 +21,14 @@ def signup(request):
     else:
         form = SignUpForm()
     return render(request, "accounts/signup.html", {'form': form})
+
+
+@method_decorator(login_required, name='dispatch')
+class UserUpdateView(UpdateView):
+    model = User
+    fields = ("username",)
+    template_name = "accounts/my_account.html"
+    success_url = reverse_lazy("my_account")
+
+    def get_object(self, **kwargs):
+        return self.request.user
