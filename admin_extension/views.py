@@ -2,7 +2,9 @@ import re
 
 from django.db import transaction
 from django.shortcuts import render, redirect
-from .forms import AddFromCSVForm, choices, split_pattern, model_fields
+
+from utils import TaskRepresentation, get_amount_and_normalize_difficulty
+from .forms import AddFromCSVForm, split_pattern, model_fields, choices
 from django.contrib.admin.views.decorators import staff_member_required
 
 from tasks.models import Task
@@ -30,15 +32,25 @@ def add_tasks_from_csv(request):
         lines = file.readlines()
 
         csv_fields = re.split(split_pattern, lines[0].decode().replace("\r\n", ""))
-        csv_fields.append("spoj")
 
+        tasks = []
         for line in lines[1:]:
             fields = re.split(split_pattern, line.decode().replace("\r\n", '').replace('"', ''))
-            fields.append(choices[int(form.cleaned_data["spoj"])][1])
 
             normalized_fields = [None if elem == "" else elem for elem in fields]
 
             data = dict(zip(csv_fields, normalized_fields))
-            Task.objects.create(**data)
+            # Task.objects.create(**data)
+            tasks.append(TaskRepresentation(**data))
+
+        max_level = get_amount_and_normalize_difficulty(tasks)
+        spoj = choices[int(form.cleaned_data["spoj"])][1]
+
+        if spoj.amount_of_difficulty_levels < max_level:
+            spoj.amount_of_difficulty_levels = max_level
+            spoj.save()
+
+        for task in tasks:
+            Task.objects.create(**(task.__dict__ | {"spoj": spoj}))
+
     return redirect("admin:index")
-    # TODO: add file parsing, database modification and tests

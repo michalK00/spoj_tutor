@@ -1,5 +1,5 @@
 import requests
-from typing import Any, List, Tuple
+from typing import Any, Tuple
 from utils import *
 
 CODEFORCES_ENDPOINT_URL = "https://codeforces.com/api/problemset.problems"

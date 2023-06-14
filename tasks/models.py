@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 class Spoj(models.Model):
     name = models.CharField(max_length=255, primary_key=True)
     amount_of_difficulty_levels = models.IntegerField(null=False, blank=False)
+    url = models.URLField(max_length=200)
 
     def __str__(self):
         return self.name

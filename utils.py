@@ -1,6 +1,8 @@
 from typing import List, Dict
 import csv
 
+from tasks.models import Spoj
+
 
 class TaskRepresentation:
     difficulty: int

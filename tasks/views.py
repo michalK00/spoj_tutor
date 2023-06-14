@@ -33,5 +33,10 @@ def single_task(request, task_id):
     return render(request, 'tasks/task.html', {'task': found_task})
 
 
+def single_user_task(request, user_task_id):
+    found_user_task = get_object_or_404(UserTask, pk=user_task_id)
+    return render(request, 'tasks/user_task.html', {'user_task': found_user_task})
+
+
 def page_not_found(request, exception):
     return render(request, '404.html', status=404)

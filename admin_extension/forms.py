@@ -5,7 +5,7 @@ from django.core.validators import FileExtensionValidator
 from django.db.models import Model
 import re
 
-from tasks.models import Spoj, Task
+from tasks.models import Task, Spoj
 from typing import List, Type
 
 choices = [(choice, spoj) for choice, spoj in enumerate(Spoj.objects.all())]
