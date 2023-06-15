@@ -1,27 +1,5 @@
 {% extends 'base.html' %}
 
-
-{% block navbar_items %}
-    <li class="nav-item">
-        <a class="nav-link" href="{% url 'tasks' %}">Explore</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#">My Problems</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#">Dashboard</a>
-    </li>
-{% endblock navbar_items %}
-
 {% block content %}
-    <div class="container bg-dark-subtle rounded">
-        <ol class="breadcrumb my-4">
-            <li class="breadcrumb-item">{{ task.id }}</li>
-            <li class="breadcrumb-item">{{ task.difficulty }}</li>
-            <li class="breadcrumb-item">{{ task.title }}</li>
-            <li class="breadcrumb-item">{{ task.spoj.name }}</li>
-            <li class="breadcrumb-item">{{ task.url }}</li>
-            <li class="breadcrumb-item">{{ task.solution_url }}</li>
-        </ol>
-    </div>
+    {%  include "tasks/task_info.html" with task=task %}
 {% endblock content %}

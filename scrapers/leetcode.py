@@ -1,6 +1,6 @@
 # inspired by https://github.com/Bishalsarang/Leetcode-Questions-Scraper/blob/master/main.py
 import json
-from typing import Any, List, Tuple
+from typing import Any, Tuple
 import requests
 
 from utils import *

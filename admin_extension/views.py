@@ -1,6 +1,10 @@
+import re
+
 from django.db import transaction
 from django.shortcuts import render, redirect
-from .forms import AddFromCSVForm, choices
+
+from utils import TaskRepresentation, get_amount_and_normalize_difficulty
+from .forms import AddFromCSVForm, split_pattern, model_fields, choices
 from django.contrib.admin.views.decorators import staff_member_required
 
 from tasks.models import Task
@@ -10,7 +14,7 @@ from tasks.models import Task
 @staff_member_required()
 def add_tasks_from_csv(request):
     def return_form():
-        return render(request, "admin/add_tasks_csv.html", {"form": form})
+        return render(request, "admin/add_tasks_csv.html", {"form": form, "model_fields": ", ".join(model_fields)})
 
     if request.method != "POST":
         form = AddFromCSVForm()
@@ -27,16 +31,26 @@ def add_tasks_from_csv(request):
 
         lines = file.readlines()
 
-        csv_fields = lines[0].decode().strip().split(",")
-        csv_fields.append("spoj")
+        csv_fields = re.split(split_pattern, lines[0].decode().replace("\r\n", ""))
 
+        tasks = []
         for line in lines[1:]:
-            fields = line.decode().replace("\r\n", "").split(",")
-            fields.append(choices[int(form.cleaned_data["spoj"])][1])
+            fields = re.split(split_pattern, line.decode().replace("\r\n", '').replace('"', ''))
 
             normalized_fields = [None if elem == "" else elem for elem in fields]
 
             data = dict(zip(csv_fields, normalized_fields))
-            Task.objects.create(**data)
+            # Task.objects.create(**data)
+            tasks.append(TaskRepresentation(**data))
+
+        max_level = get_amount_and_normalize_difficulty(tasks)
+        spoj = choices[int(form.cleaned_data["spoj"])][1]
+
+        if spoj.amount_of_difficulty_levels < max_level:
+            spoj.amount_of_difficulty_levels = max_level
+            spoj.save()
+
+        for task in tasks:
+            Task.objects.create(**(task.__dict__ | {"spoj": spoj}))
+
     return redirect("admin:index")
-    # TODO: add file parsing, database modification and tests

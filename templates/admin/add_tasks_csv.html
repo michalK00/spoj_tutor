@@ -10,6 +10,13 @@
         <div class="col-lg-4 col-md-6 col-sm-8">
             <div class="card">
                 <div class="card-body">
+                    <label class="alert alert-success">CSV requires:
+                        <ul>
+                            <li>Task fields in header: {{ model_fields }}</li>
+                            <li>Everything  to be separated with commas. If anything is optional still put commas.</li>
+                            <li>Double quotes around things that has commas inside (that shouldn't separate)</li>
+                        </ul>
+                    </label>
                     <h3 class="card-title">Load tasks from .csv file</h3>
                     <form method="post" enctype="multipart/form-data" novalidate>
                         {% csrf_token %}

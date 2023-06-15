@@ -1,0 +1,47 @@
+<table class="table-responsive-sm table  table-striped my-2">
+    <thead class="table-dark ">
+    </thead>
+    <tbody>
+    <tr>
+        <th>Title:</th>
+        <td class="align-middle">{{ task.title }}</td>
+    </tr>
+    <tr>
+        <th>Difficulty:</th>
+        <td class="align-middle">
+            <div class="diff container-lg rounded-2"
+                 id="diff">{{ task.difficulty | add:1 }}/{{ task.spoj.amount_of_difficulty_levels }}
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <th>SPOJ:</th>
+        <td class="align-middle">
+            <a class="link" href={{ task.spoj.url }}>{{ task.spoj }} </a>
+        </td>
+    </tr>
+
+    <tr>
+        <th>Task URL:</th>
+        <td class="align-middle">
+            {% if task.url %}
+                <a class="link" href={{ task.url }}>{{ task.url }}</a>
+            {% else %}
+                -
+            {% endif %}
+        </td>
+    </tr>
+
+    <tr>
+        <th>Solution URL:</th>
+        <td class="align-middle">
+            {% if task.solution_url %}
+                <a class="link" href={{ task.solution_url }}>{{ task.solution_url }}</a>
+            {% else %}
+                -
+            {% endif %}
+        </td>
+    </tr>
+
+    </tbody>
+</table>
