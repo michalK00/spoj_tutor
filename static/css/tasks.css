@@ -34,14 +34,20 @@
 .icon-grey {
     color: #212529;
 }
+.search:hover .icon {
+    color: #F2F2F2;
+}
 .row-element {
     margin: 0 5px 0 5px;
+    height: 40px;
 }
 .row-element-last-right {
     margin-left: 5px;
+    height: 40px;
 }
 .row-element-last-left {
     margin-right: 5px;
+    height: 40px;
 }
 .dropdown-icon {
     font-size: 18px;
@@ -51,4 +57,8 @@
 }
 .icon-yellow {
     color: #FDCB4A;
+}
+.table-info {
+    font-size: 10px;
+    color: #212529;
 }

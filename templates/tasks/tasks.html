@@ -10,8 +10,9 @@
 
 
     <div class="row justify-content-center">
-        <div class="col-lg-8 col-md-12 col-sm-12">
+        <div class="col-lg-9 col-md-12 col-sm-12">
             {% include 'includes/table_nav.html' %}
+
             <table class="fixed table table-striped my-2 align-middle">
                 <thead class="table-dark ">
                 <tr>
@@ -60,6 +61,7 @@
 
 {% endblock content %}
 {% block scripts %}
+    <script src="{% static "js/query_params_handler.js" %}"></script>
     <script>
         const difficulty_divs = document.getElementsByClassName('diff container-lg rounded-2')
         for (let i = 0; i < difficulty_divs.length; i++) {

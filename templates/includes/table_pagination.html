@@ -6,7 +6,7 @@
         <ul class="pagination justify-content-end">
             {% if tasks.has_previous %}
                 <li class="page-item">
-                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}"><i
+                    <a class="page-link" onclick="redirect(query_param='page', query_value='{{ tasks.previous_page_number }}')"><i
                             class="bi bi-chevron-left"></i></a>
                 </li>
             {% else %}
@@ -28,7 +28,7 @@
                         </li>
                     {% else %}
                         <li class="page-item">
-                            <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                            <a class="page-link" onclick="redirect(query_param='page', query_value='{{ i }}')">{{ i }}</a>
                         </li>
                     {% endif %}
                 {% endif %}
@@ -36,7 +36,7 @@
 
             {% if tasks.has_next %}
                 <li class="page-item">
-                    <a class="page-link" href="?page={{ page_obj.next_page_number }}"><i
+                    <a class="page-link" onclick="redirect(query_param='page', query_value='{{ tasks.next_page_number }}')"><i
                             class="bi bi-chevron-right"></i></a>
                 </li>
             {% else %}
@@ -46,4 +46,5 @@
             {% endif %}
         </ul>
     </nav>
+
 {% endif %}
