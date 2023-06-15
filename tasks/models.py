@@ -32,8 +32,14 @@ class Task(models.Model):
 
 
 class UserTask(models.Model):
+    id = models.AutoField(primary_key=True)
+
     task_id = models.ForeignKey(Task, related_name="user_tasks", on_delete=models.CASCADE)
     user_id = models.ForeignKey(User, related_name="user_tasks", on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ("task_id", "user_id")
+
     # still don't know if we're going to keep the user_solution field
     user_solution = models.CharField(max_length=1000, blank=True, null=True)
     user_note = models.CharField(max_length=500, blank=True, null=True)

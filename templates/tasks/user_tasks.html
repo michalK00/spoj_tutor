@@ -24,19 +24,22 @@
             </thead>
             <tbody>
             {% for user_task in user_tasks %}
-                <tr>
-                    <td class="align-middle"><a class="link"
-                                                href="{% url 'single_task' user_task.task_id.id %}">{{ user_task.task_id.title }} </a>
-                    </td>
-                    <td class="align-middle">
-                        <div class="diff container-lg rounded-2"
-                             id="diff">{{ user_task.task_id.difficulty | add:1 }}/{{ user_task.task_id.spoj.amount_of_difficulty_levels }}</div>
-                    </td>
-                    <td class="align-middle"><a class="link" href={{ user_task.task_id.url }} target="_blank"
-                                                rel="noopener noreferrer">{{ user_task.task_id.spoj }}</a></td>
+                {% if user == user_task.user_id %}
+
+                    <tr>
+                        <td class="align-middle"><a class="link"
+                                                    href="{% url 'single_user_task' user_task.id %}">{{ user_task.task_id.title }} </a>
+                        </td>
+                        <td class="align-middle">
+                            <div class="diff container-lg rounded-2"
+                                 id="diff">{{ user_task.task_id.difficulty | add:1 }}/{{ user_task.task_id.spoj.amount_of_difficulty_levels }}</div>
+                        </td>
+                        <td class="align-middle"><a class="link" href={{ user_task.task_id.url }} target="_blank"
+                                                    rel="noopener noreferrer">{{ user_task.task_id.spoj }}</a></td>
 
 
-                </tr>
+                    </tr>
+                {% endif %}
             {% endfor %}
             </tbody>
         </table>
