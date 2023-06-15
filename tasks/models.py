@@ -19,8 +19,9 @@ class Task(models.Model):
     title = models.CharField(max_length=125)
     spoj = models.ForeignKey(Spoj, on_delete=models.CASCADE)
 
+    # there are tasks with exactly the same names, but they are different.
     class Meta:
-        unique_together = ("title", "spoj")
+        unique_together = ("difficulty", "title", "spoj", "url", "solution_url")
 
     # blank=True <- not required in forms
     # null=True <- can be null in db

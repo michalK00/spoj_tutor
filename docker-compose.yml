@@ -3,9 +3,20 @@ services:
   app:
     build: .
     ports:
-      - 8000:8000
+      - "8000:8000"
     volumes:
       - .:/django
     image: app:django
     container_name: django_container
+    depends_on:
+      - db
     command: python manage.py runserver 0.0.0.0:8000
+
+  db:
+    container_name: dev_db
+    image: postgres:latest
+    env_file:
+      - dev.env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+
