@@ -18,7 +18,20 @@
 .link {
     color: #212529;
     text-decoration: none;
+}
 
+.link:hover {
+    color: #007AFF;
+    transition: color 0.5s;
+    text-decoration: none;
+}
+.link-delete {
+    color: #212529;
+    text-decoration: none;
+}
+.link-delete:hover {
+    color: #FF2D55;
+    text-decoration: none;
 }
 
 .link:hover {

@@ -14,7 +14,6 @@ from .query_params.task_query_params import TaskQuery
 
 # Create your views here.
 def tasks(request):
-
     if request.method == "POST":
         if "add-user-task" in request.POST:
             task_id = request.POST["add-user-task"]
@@ -46,14 +45,15 @@ def tasks(request):
         # probably the user tried to add a page number
         # in the url, so we fall back to the last page
         tasks = paginator.page(paginator.num_pages)
-    return render(request, 'tasks/tasks.html', {'tasks': tasks, 'spojs': spojs, 'task_query': task_query, "tasks_count": tasks_count, "user_tasks_ids": user_tasks_ids})
-
+    return render(request, 'tasks/tasks.html',
+                  {'tasks': tasks, 'spojs': spojs, 'task_query': task_query, "tasks_count": tasks_count,
+                   "user_tasks_ids": user_tasks_ids})
 
 
 class UserTaskListView(ListView):
     model = UserTask
-    context_object_name = 'user_tasks'
-    template_name = 'tasks/user_tasks.html'
+    context_object_name = 'tasks'
+    template_name = 'user_tasks/user_tasks.html'
     paginate_by = 20
 
 
@@ -79,7 +79,7 @@ def single_user_task(request, user_task_id):
                         })
 
     def return_form():
-        return render(request, 'tasks/user_task.html', {'form': form, 'user_task': found_user_task})
+        return render(request, 'user_tasks/user_task.html', {'form': form, 'user_task': found_user_task})
 
     if request.method != "POST":
         return return_form()

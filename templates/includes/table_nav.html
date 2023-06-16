@@ -14,40 +14,43 @@
         {% endif %}
         <div class="row-element">
             {% if user.is_authenticated %}
-                <div class="input-group mb-3">
+                {% block status_dropdown %}
+                    <div class="input-group mb-3">
 
-                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                        {% if "status" in task_query.params %}
-                            {% if request.GET.status == "to-add" %}
-                                <i class="bi bi-plus dropdown-icon" style="font-size: 16px"></i> To add
-                            {% elif request.GET.status == "in-my-problems" %}
-                                <i class="bi bi-braces dropdown-icon icon-yellow" style="font-size: 16px"></i> In
-                                my problems
-                            {% elif request.GET.status == "solved" %}
-                                <i class="bi bi-check dropdown-icon icon-green" style="font-size: 16px"></i>
-                                Solved
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                            {% if "status" in task_query.params %}
+                                {% if request.GET.status == "to-add" %}
+                                    <i class="bi bi-plus dropdown-icon" style="font-size: 16px"></i> To add
+                                {% elif request.GET.status == "in-my-problems" %}
+                                    <i class="bi bi-braces dropdown-icon icon-yellow" style="font-size: 16px"></i> In
+                                    my problems
+                                {% elif request.GET.status == "solved" %}
+                                    <i class="bi bi-check dropdown-icon icon-green" style="font-size: 16px"></i>
+                                    Solved
+                                {% endif %}
+
+                            {% else %}
+                                Status
                             {% endif %}
-
-                        {% else %}
-                            Status
-                        {% endif %}
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item"
-                               onclick="redirect(query_param='status', query_value='to-add', elem_id=null)"><i
-                                class="bi bi-plus dropdown-icon"></i> To add</a>
-                        </li>
-                        <li><a class="dropdown-item"
-                               onclick="redirect(query_param='status', query_value='in-my-problems', elem_id=null)"><i
-                                class="bi bi-braces dropdown-icon icon-yellow"></i> In
-                            my problems</a></li>
-                        <li><a class="dropdown-item"
-                               onclick="redirect(query_param='status', query_value='solved', elem_id=null)"><i
-                                class="bi bi-check dropdown-icon icon-green"></i>
-                            Solved</a></li>
-                    </ul>
-                </div>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item"
+                                   onclick="redirect(query_param='status', query_value='to-add', elem_id=null)"><i
+                                    class="bi bi-plus dropdown-icon"></i> To add</a>
+                            </li>
+                            <li><a class="dropdown-item"
+                                   onclick="redirect(query_param='status', query_value='in-my-problems', elem_id=null)"><i
+                                    class="bi bi-braces dropdown-icon icon-yellow"></i> In
+                                my problems</a></li>
+                            <li><a class="dropdown-item"
+                                   onclick="redirect(query_param='status', query_value='solved', elem_id=null)"><i
+                                    class="bi bi-check dropdown-icon icon-green"></i>
+                                Solved</a></li>
+                        </ul>
+                    </div>
+                {% endblock status_dropdown %}
             {% endif %}
         </div>
 
