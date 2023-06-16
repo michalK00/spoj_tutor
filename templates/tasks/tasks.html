@@ -46,7 +46,18 @@
                         </td>
                         {% if user.is_authenticated %}
                             <td class="text-center">
-                                <a class="link" href="#"><i class="bi bi-bookmark-plus" style="font-size: 25px"></i></a>
+                                <form method="post" action="{{ request.full_path }}">
+                                    {% csrf_token %}
+                                    {% if task.id in user_tasks_ids %}
+                                        <button class="blank-button link" type="submit" name="delete-user-task" value="{{ task.id }}">
+                                            <i class="bi bi-bookmark-check-fill" style="font-size: 25px"></i>
+                                        </button>
+                                    {% else %}
+                                        <button class="blank-button link" type="submit" name="add-user-task" value="{{ task.id }}">
+                                            <i class="bi bi-bookmark-plus" style="font-size: 25px"></i>
+                                        </button>
+                                    {% endif %}
+                                </form>
                             </td>
                         {% endif %}
                     </tr>

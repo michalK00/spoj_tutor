@@ -80,26 +80,26 @@ WSGI_APPLICATION = "spoj_tutor.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-"""
-SQLite
+
+# SQLite
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db.sqlite3",
     }
 }
-"""
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'spoj_tutor',  # Name of the database we will be using.
-        'USER': 'postgres',  # User with access to the data
-        'PASSWORD': 'admin',  # it’s the key required to connect to PostgreSQL.
-        'HOST': 'localhost',  # it’s the server name on which PostgreSQL is running.
-        'PORT': '5432',  # it’s the port number that will be used when listening to the connections
-    }
-}
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'spoj_tutor',  # Name of the database we will be using.
+#         'USER': 'postgres',  # User with access to the data
+#         'PASSWORD': 'admin',  # it’s the key required to connect to PostgreSQL.
+#         'HOST': 'localhost',  # it’s the server name on which PostgreSQL is running.
+#         'PORT': '5432',  # it’s the port number that will be used when listening to the connections
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
