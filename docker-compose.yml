@@ -7,7 +7,7 @@ services:
       - .:/django
     ports:
       - "8000:8000"
-    env_file: dev.env
+    env_file: .env
     depends_on:
       - postgres
 
@@ -16,7 +16,7 @@ services:
     container_name: db
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    env_file: dev.env
+    env_file: .env
 
 volumes:
   postgres_data:

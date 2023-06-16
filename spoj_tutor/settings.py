@@ -86,7 +86,8 @@ WSGI_APPLICATION = "spoj_tutor.wsgi.application"
 #     }
 # }
 
-
+"""
+For local machine
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -94,6 +95,18 @@ DATABASES = {
         'USER': 'postgres',  # User with access to the data
         'PASSWORD': 'admin',  # it’s the key required to connect to PostgreSQL.
         'HOST': 'localhost',  # it’s the server name on which PostgreSQL is running.
+        'PORT': 5432,  # it’s the port number that will be used when listening to the connections
+    }
+}
+"""
+# For docker
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',  # Name of the database we will be using.
+        'USER': 'postgres',  # User with access to the data
+        'PASSWORD': 'postgres',  # it’s the key required to connect to PostgreSQL.
+        'HOST': 'postgres',  # it’s the server name on which PostgreSQL is running.
         'PORT': 5432,  # it’s the port number that will be used when listening to the connections
     }
 }

@@ -4,7 +4,7 @@ from django.db import transaction
 from django.shortcuts import render, redirect
 
 from utils import TaskRepresentation, get_amount_and_normalize_difficulty
-from .forms import AddFromCSVForm, split_pattern, model_fields, choices
+from .forms import AddFromCSVForm, split_pattern, model_fields, get_choices
 from django.contrib.admin.views.decorators import staff_member_required
 
 from tasks.models import Task
@@ -44,7 +44,7 @@ def add_tasks_from_csv(request):
             tasks.append(TaskRepresentation(**data))
 
         max_level = get_amount_and_normalize_difficulty(tasks)
-        spoj = choices[int(form.cleaned_data["spoj"])][1]
+        spoj = get_choices()[int(form.cleaned_data["spoj"])][1]
 
         if spoj.amount_of_difficulty_levels < max_level:
             spoj.amount_of_difficulty_levels = max_level
