@@ -11,12 +11,11 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import os
 from pathlib import Path
-
 from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-load_dotenv(os.path.join(BASE_DIR, 'dev.env'))
+load_dotenv()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -24,13 +23,11 @@ load_dotenv(os.path.join(BASE_DIR, 'dev.env'))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "django-insecure-#d_escy-8d7hsr)v3#f3hhb7)=g#b_ydaw2)rauba_%)j&rce*"
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = int(True)
-
 ALLOWED_HOSTS = ["127.0.0.1"]
 
-# Application definition
+DEBUG = True
 
+# Application definition
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -81,25 +78,25 @@ WSGI_APPLICATION = "spoj_tutor.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-# SQLite
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
-
-
+# SQLite database
 # DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'spoj_tutor',  # Name of the database we will be using.
-#         'USER': 'postgres',  # User with access to the data
-#         'PASSWORD': 'admin',  # it’s the key required to connect to PostgreSQL.
-#         'HOST': 'localhost',  # it’s the server name on which PostgreSQL is running.
-#         'PORT': '5432',  # it’s the port number that will be used when listening to the connections
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
 #     }
 # }
+
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'spoj_tutor',  # Name of the database we will be using.
+        'USER': 'postgres',  # User with access to the data
+        'PASSWORD': 'admin',  # it’s the key required to connect to PostgreSQL.
+        'HOST': 'localhost',  # it’s the server name on which PostgreSQL is running.
+        'PORT': 5432,  # it’s the port number that will be used when listening to the connections
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -134,10 +131,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = "static/"
-# STATIC_ROOT = os.path.join(BASE_DIR, "static")
-
+# STATIC_ROOT = os.path.join(BASE_DIR, "static_files")
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, "static")
 ]
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
