@@ -2,13 +2,24 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.core.validators import FileExtensionValidator
+from django.db import connection
 from django.db.models import Model
 import re
 
 from tasks.models import Task, Spoj
 from typing import List, Type
 
-choices = [(choice, spoj) for choice, spoj in enumerate(Spoj.objects.all())]
+
+def get_choices():
+    choices = []
+    try:
+        choices = [(choice, spoj) for choice, spoj in enumerate(Spoj.objects.iterator())]
+    except:
+        pass
+
+    return choices
+
+
 can_be_null = ["url", "solution_url"]
 unwanted_in_tasks = ["id", "spoj", "user_tasks"]
 model_fields = [
@@ -66,7 +77,7 @@ class AddFromCSVForm(forms.Form):
     )
     spoj = forms.ChoiceField(
         label="Choose spoj",
-        choices=choices,
+        choices=get_choices(),
         widget=forms.Select(attrs={"style": "height: " "2.3612rem;"}),
     )
 
