@@ -1,3 +1,4 @@
+{% load static %}
 <table class="table-responsive-sm table  table-striped my-2">
     <thead class="table-dark ">
     </thead>
@@ -8,9 +9,9 @@
     </tr>
     <tr>
         <th>Difficulty:</th>
-        <td class="align-middle">
-            <div class="diff container-lg rounded-2"
-                 id="diff">{{ task.difficulty | add:1 }}/{{ task.spoj.amount_of_difficulty_levels }}
+        <td class="">
+            <div class="diff container-lg rounded-2 text-center" id="diff" style="width: 10%; float: left">
+                {{ task.difficulty | add:1 }}/{{ task.spoj.amount_of_difficulty_levels }}
             </div>
         </td>
     </tr>
@@ -45,3 +46,4 @@
 
     </tbody>
 </table>
+<script src="{% static 'js/difficulty_rendering.js' %}"></script>
