@@ -132,6 +132,8 @@ def single_user_task(request, user_task_id):
 
     return redirect("user_tasks")
 
+def dashboard(request):
+    return render(request, 'dashboard/dashboard.html')
 
 def page_not_found(request, exception):
     return render(request, '404.html', status=404)

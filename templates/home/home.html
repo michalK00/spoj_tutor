@@ -1,0 +1,117 @@
+{% load static %}
+<!doctype html>
+<html lang="en" class="h-100" data-bs-theme="auto">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SPOJ Tutor</title>
+
+
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/bootstrap-icons.css' %}" rel="stylesheet">
+    <link href="{% static 'css/home.css' %}" rel="stylesheet">
+</head>
+
+
+<body class="h-100 ">
+
+<div class="main text-bg-dark w-100 h-100 text-center">
+    <div class="cover-container p-3 mx-auto h-100">
+        <header class="container">
+
+            <h3 class="float-md-start mb-0">SPOJ Tutor</h3>
+            <nav class="nav nav-masthead justify-content-center float-md-end">
+                <a class="btn btn-outline-light mx-1" href="{% url 'login' %}">Log In</a>
+                <a class="btn btn-outline-custom mx-1" href="{% url 'signup' %}">Sign Up</a>
+            </nav>
+
+        </header>
+
+        <main class="container px-3">
+            <h1>Welcome to SPOJ Tutor!</h1>
+            <p class="lead"> Master coding challenges and algorithmic problem-solving with SPOJ Tutor. Track your
+                progress,
+                sharpen your skills, and conquer coding like a pro. <br>Join now and let your coding prowess shine!</p>
+            <p class="lead">
+                <a href="{% url 'tasks' %}" class="btn btn-lg btn-light border-white fw-bold"> Explore </a>
+            </p>
+
+        </main>
+        <div style="height: 4rem; display: flex; justify-content: center"><a class="arrow" onclick="window.scrollTo(0,680)"><i class="bi bi-arrow-down"
+                                                                             style="font-size: 2rem"></i></a></div>
+    </div>
+</div>
+
+<div class="features px-4 pt-5 " id="featured-3">
+    <div class="mx-auto" style="max-width: 70em;" id="arrow">
+        <div class="row pb-0 py-lg-5 py-md-4 py-sm-4 align-items-center rounded-3 border shadow mb-5 justify-content-center">
+            <div class="col-lg-7">
+                <h1 class="display-4 fw-bold lh-1 text-body-emphasis">Empower Your Journey</h1>
+                <p class="lead">Our platform offers a unique opportunity to elevate your coding
+                    prowess, providing you with the tools and resources needed to help in your programming journey.
+
+                    As you track your progress and enhance your skills, you'll be opening doors to exciting job
+                    opportunities in the world of technology and software development.
+
+                    Don't miss out and join today!</p>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
+                    <a href="{% url 'signup' %}" class="btn btn-outline-custom btn-lg px-4 me-md-2 fw-bold">Get
+                        Started</a>
+                </div>
+            </div>
+            <div class="col-lg-4 col-sm-6">
+                <img class="rounded-lg-3 " src="{% static "img/home.svg" %}" alt="" width="100%">
+            </div>
+        </div>
+        <h2 class="pb-4 border-bottom text-center">Unlock your coding potential and become an expert with SPOJ
+            Tutor</h2>
+        <div class="row g-4 py-5 row-cols-1 row-cols-lg-3 align-content-md-center">
+            <div class="feature col">
+                <div class="feature-icon d-inline-flex align-items-center justify-content-center bg-gradient-custom fs-2 mb-3">
+                    <i class="bi bi-database"></i>
+                </div>
+                <h3 class="fs-2">Diverse Task Collection</h3>
+                <p>Explore a vast collection of coding tasks from popular platforms like LeetCode, Codeforces, and more,
+                    all
+                    in one convenient place.</p>
+            </div>
+            <div class="feature col">
+                <div class="feature-icon d-inline-flex align-items-center justify-content-center bg-gradient-custom fs-2 mb-3">
+                    <i class="bi bi-bar-chart"></i>
+                </div>
+                <h3 class="fs-2">Track Your Progress</h3>
+                <p>Monitor your coding journey effortlessly with our intuitive dashboard, allowing you to track your
+                    progress, manage tasks, and stay organized.</p>
+            </div>
+            <div class="feature col">
+                <div class="feature-icon d-inline-flex align-items-center justify-content-center bg-gradient-custom fs-2 mb-3">
+                    <i class="bi bi-journal-code"></i>
+                </div>
+                <h3 class="fs-2">Knowledge Vault</h3>
+                <p>Enhance your learning experience by adding your own solutions and notes to each task, creating a
+                    personalized repository of knowledge and insights.</p>
+            </div>
+        </div>
+        <div class="container">
+            <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 mt-4 border-top">
+                <div class="col-md-4 d-flex align-items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 200 200">
+                        <rect width="100%" height="100%" fill="rgb(3, 131, 123)"/>
+                        <text x="50%" y="50%" fill="#FFFFFF" font-family="Comic Sans MS" font-size="160"
+                              text-anchor="middle"
+                              dominant-baseline="central">D
+                        </text>
+                    </svg>
+                    <span class="mx-2 mb-3 mb-md-0 text-body-secondary">&copy; 2023 Doodle Company, Inc</span>
+                </div>
+
+            </footer>
+        </div>
+    </div>
+</div>
+
+
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>
