@@ -5,7 +5,6 @@ from .models import Task
 
 
 # Create your tests here.
-# TODO: fix tests after new model migration (mainly setUp), split tests between files (like in accounts app)
 
 class TasksTests(TestCase):
     def setUp(self):

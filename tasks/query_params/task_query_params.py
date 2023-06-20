@@ -3,19 +3,16 @@ from ..models import Task, UserTask
 QUERY_PARAMS_ORDER = ("search", "status", "source")
 
 
-class TaskQuery:
-    def __init__(self, request):
+class QueryHandler:
+    def __init__(self, request, queryset):
         self.request = request
+        self.queryset = queryset
         self.params = self._get_params()
         self.params_count = len(self.params)
         self.url = self._build_url()
-        self.task_list = self._handle_params()
 
     def _get_params(self):
-        params = []
-        for item in self.request.GET.items():
-            params.append(item[0])
-        return params
+        return list(self.request.GET.keys())
 
     def _build_url(self):
         url = ""
@@ -23,6 +20,12 @@ class TaskQuery:
             if param in self.request.GET:
                 url += f"&{param}={self.request.GET.get(param)}"
         return url
+
+
+class TaskQuery(QueryHandler):
+    def __init__(self, request):
+        super().__init__(request, Task.objects.all())
+        self.filtered_queryset = self._handle_params()
 
     def _handle_params(self):
         task_list = Task.objects.all()
@@ -48,26 +51,10 @@ class TaskQuery:
         return task_list
 
 
-class UserTaskQuery:
+class UserTaskQuery(QueryHandler):
     def __init__(self, request):
-        self.request = request
-        self.params = self._get_params()
-        self.params_count = len(self.params)
-        self.url = self._build_url()
-        self.task_list = self._handle_params()
-
-    def _get_params(self):
-        params = []
-        for item in self.request.GET.items():
-            params.append(item[0])
-        return params
-
-    def _build_url(self):
-        url = ""
-        for param in QUERY_PARAMS_ORDER:
-            if param in self.request.GET:
-                url += f"&{param}={self.request.GET.get(param)}"
-        return url
+        super().__init__(request, UserTask.objects.all())
+        self.filtered_queryset = self._handle_params()
 
     def _handle_params(self):
         user_tasks = UserTask.objects.all()

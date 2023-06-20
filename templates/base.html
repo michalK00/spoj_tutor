@@ -58,34 +58,40 @@
             </div>
         </nav>
     {% endblock nav %}
-    <div class="container mx-auto mt-5">
-        {% block content %}
-        {% endblock %}
-    </div>
-{% endblock body %}
-{% block scripts %}
-{% endblock scripts %}
-</div>
-{% block footer %}
+    {% block container %}
+        <div class="container mx-auto mt-5">
+            {% block content %}
+            {% endblock %}
+        </div>
+
+
+        {% block scripts %}
+
+        {% endblock scripts %}
+        </div>
+        {% block footer %}
 
 
 
-    <div class="container">
-        <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 mt-4 border-top">
-            <div class="col-md-4 d-flex align-items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 200 200">
-                    <rect width="100%" height="100%" fill="#F9C846"/>
-                    <text x="50%" y="50%" fill="#FFFFFF" font-family="Comic Sans MS" font-size="160" text-anchor="middle"
-                          dominant-baseline="central">D
-                    </text>
-                </svg>
-                <span class="mx-2 mb-3 mb-md-0 text-body-secondary">&copy; 2023 Doodle Company, Inc</span>
+            <div class="container">
+                <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 mt-4 border-top">
+                    <div class="col-md-4 d-flex align-items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 200 200">
+                            <rect width="100%" height="100%" fill="#F9C846"/>
+                            <text x="50%" y="50%" fill="#FFFFFF" font-family="Comic Sans MS" font-size="160"
+                                  text-anchor="middle"
+                                  dominant-baseline="central">D
+                            </text>
+                        </svg>
+                        <span class="mx-2 mb-3 mb-md-0 text-body-secondary">&copy; 2023 Doodle Company, Inc</span>
+                    </div>
+                </footer>
             </div>
-        </footer>
-    </div>
 
 
-{% endblock footer %}
+        {% endblock footer %}
+    {% endblock container %}
+{% endblock body %}
 <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 </body>
 </html>

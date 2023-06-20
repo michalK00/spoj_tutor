@@ -10,12 +10,7 @@ from typing import List, Type
 
 
 def get_choices():
-    choices = []
-    try:
-        choices = [(choice, spoj) for choice, spoj in enumerate(Spoj.objects.iterator())]
-    except:
-        pass
-
+    choices = [(choice, spoj) for choice, spoj in enumerate(Spoj.objects.all())]
     return choices
 
 

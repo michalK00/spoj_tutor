@@ -1,15 +1,15 @@
 import datetime
 
-from django.contrib.auth.decorators import login_required
+import json
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db import transaction
 from django.shortcuts import get_object_or_404, render, redirect
-from django.utils.decorators import method_decorator
-from django.views.generic import ListView
 from datetime import datetime
 from .forms import EditUserTask
 from .models import Task, UserTask, Spoj
 from .query_params.task_query_params import TaskQuery, UserTaskQuery
+from django.db.models import Count, Case, When
+from collections import namedtuple
 
 
 # Create your views here.
@@ -27,7 +27,7 @@ def tasks(request):
                 UserTask.objects.filter(task_id=task, user_id=request.user).delete()
 
     task_query = TaskQuery(request)
-    task_list = task_query.task_list
+    task_list = task_query.filtered_queryset
     tasks_count = task_list.count()
     spojs = Spoj.objects.all()
     user_tasks_ids = []
@@ -41,11 +41,8 @@ def tasks(request):
     try:
         tasks = paginator.page(page)
     except PageNotAnInteger:
-        # fallback to the first page
         tasks = paginator.page(1)
     except EmptyPage:
-        # probably the user tried to add a page number
-        # in the url, so we fall back to the last page
         tasks = paginator.page(paginator.num_pages)
     return render(request, 'tasks/tasks.html',
                   {'tasks': tasks, 'spojs': spojs, 'task_query': task_query, "tasks_count": tasks_count,
@@ -60,7 +57,7 @@ def user_tasks(request):
             task.delete()
 
     user_task_query = UserTaskQuery(request)
-    task_list = user_task_query.task_list
+    task_list = user_task_query.filtered_queryset
     tasks_count = task_list.count()
     spojs = Spoj.objects.all()
 
@@ -85,12 +82,6 @@ def user_tasks(request):
 def single_task(request, task_id):
     found_task = get_object_or_404(Task, pk=task_id)
     return render(request, 'tasks/task.html', {'task': found_task})
-
-
-# @method_decorator(login_required, name='dispatch')
-# def single_user_task(request, user_task_id):
-#     found_user_task = get_object_or_404(UserTask, pk=user_task_id)
-#     return render(request, 'tasks/user_task.html', {'user_task': found_user_task})
 
 
 def single_user_task(request, user_task_id):
@@ -132,8 +123,64 @@ def single_user_task(request, user_task_id):
 
     return redirect("user_tasks")
 
+
 def dashboard(request):
-    return render(request, 'dashboard/dashboard.html')
+    solved_no = UserTask.objects.filter(user_id=request.user.id, finished_date__isnull=False).count()
+    saved_no = UserTask.objects.filter(user_id=request.user.id).count()
+    total_no = Task.objects.all().count()
+
+    Stats = namedtuple('Stats', ['solved_no', 'solved_ratio', 'saved_no', 'saved_ratio', 'total_no'])
+    stats = Stats(
+        solved_no=solved_no,
+        saved_no=saved_no,
+        total_no=total_no,
+        solved_ratio="{:.2f}".format(solved_no / saved_no * 100),
+        saved_ratio="{:.2f}".format(saved_no / total_no * 100)
+    )
+
+    spoj_data = Spoj.objects.filter(task__user_tasks__user_id=request.user.id).annotate(
+        num_solved=Count(Case(When(task__user_tasks__finished_date__isnull=False, then=1))))
+
+    spoj_names = [spoj.name for spoj in spoj_data]
+    num_user_tasks = [spoj.num_solved for spoj in spoj_data]
+    SolvedPie = namedtuple("SolvedPie", ['num_user_tasks', 'spoj_names'])
+    solved_pie = SolvedPie(num_user_tasks=num_user_tasks, spoj_names=spoj_names)
+
+    spoj_data = Spoj.objects.filter(task__user_tasks__user_id=request.user.id).annotate(
+        num_solved=Count(Case(When(task__user_tasks__finished_date__isnull=True, then=1))))
+
+    spoj_names = [spoj.name for spoj in spoj_data]
+    num_user_tasks = [spoj.num_solved for spoj in spoj_data]
+    UnsolvedPie = namedtuple("UnsolvedPie", ['num_user_tasks', 'spoj_names'])
+    unsolved_pie = UnsolvedPie(num_user_tasks=num_user_tasks, spoj_names=spoj_names)
+
+    solved_user_tasks = UserTask.objects.filter(user_id=request.user.id, finished_date__isnull=False).select_related(
+        'task_id__spoj')
+    unsolved_user_tasks = UserTask.objects.filter(user_id=request.user.id, finished_date__isnull=True).select_related(
+        'task_id__spoj')
+
+    def calculate_difficulty(user_task_list):
+        tasks_list = []
+        for user_task in user_task_list:
+            spoj_difficulty_levels = user_task.task_id.spoj.amount_of_difficulty_levels
+            task_difficulty = user_task.task_id.difficulty
+            tasks_list.append(
+                (task_difficulty + 1) / spoj_difficulty_levels
+            )
+        return tasks_list
+
+    Histogram = namedtuple("Histogram", ['solved_difficulty', 'unsolved_difficulty'])
+    histogram = Histogram(solved_difficulty=calculate_difficulty(solved_user_tasks),
+                          unsolved_difficulty=calculate_difficulty(unsolved_user_tasks))
+
+    solved_tasks_dates = UserTask.objects.all().filter(user_id=request.user.id, finished_date__isnull=False).values_list(
+        'finished_date', flat=True).order_by('finished_date')
+    solved_tasks_dates = [f'{date.year}-{date.month}-{date.day}' for date in solved_tasks_dates]
+    print(solved_tasks_dates)
+    return render(request, 'dashboard/dashboard.html',
+                  {'stats': stats, 'solved_pie': solved_pie, 'unsolved_pie': unsolved_pie, 'histogram': histogram,
+                   'solved_tasks_dates': solved_tasks_dates})
+
 
 def page_not_found(request, exception):
     return render(request, '404.html', status=404)

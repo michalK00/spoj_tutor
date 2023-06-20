@@ -40,7 +40,6 @@ def add_tasks_from_csv(request):
             normalized_fields = [None if elem == "" else elem for elem in fields]
 
             data = dict(zip(csv_fields, normalized_fields))
-            # Task.objects.create(**data)
             tasks.append(TaskRepresentation(**data))
 
         max_level = get_amount_and_normalize_difficulty(tasks)

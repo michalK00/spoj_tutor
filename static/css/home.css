@@ -1,12 +1,7 @@
-/*
- * Globals
- */
 
-
-/* Custom default button */
 .btn-light {
     color: #333;
-    text-shadow: none; /* Prevent inheritance from `body` */
+    text-shadow: none;
     letter-spacing: 0.03rem
 }
 
@@ -17,10 +12,6 @@
     border: solid #FFFFFF;
 }
 
-
-/*
- * Base structure
- */
 .btn-outline-custom {
     color: #00AFA1;
     border: solid #00AFA1;
@@ -37,7 +28,6 @@
     background: rgb(3, 131, 123);
     background: linear-gradient(rgba(0, 178, 167, 1) 0%, rgba(3, 131, 123, 1) 90%);
 }
-
 
 .main {
     box-shadow: inset 0 0 5rem rgba(0, 0, 0, .5);
