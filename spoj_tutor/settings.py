@@ -79,12 +79,12 @@ WSGI_APPLICATION = "spoj_tutor.wsgi.application"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 #
 # SQLite database
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
+#     }
+# }
 
 """
 For local machine
@@ -99,17 +99,17 @@ DATABASES = {
     }
 }
 """
-# # For docker
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'postgres',  # Name of the database we will be using.
-#         'USER': 'postgres',  # User with access to the data
-#         'PASSWORD': 'postgres',  # it’s the key required to connect to PostgreSQL.
-#         'HOST': 'postgres',  # it’s the server name on which PostgreSQL is running.
-#         'PORT': 5432,  # it’s the port number that will be used when listening to the connections
-#     }
-# }
+# For docker
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',  # Name of the database we will be using.
+        'USER': 'postgres',  # User with access to the data
+        'PASSWORD': 'postgres',  # it’s the key required to connect to PostgreSQL.
+        'HOST': 'postgres',  # it’s the server name on which PostgreSQL is running.
+        'PORT': 5432,  # it’s the port number that will be used when listening to the connections
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
