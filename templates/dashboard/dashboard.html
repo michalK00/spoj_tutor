@@ -20,199 +20,46 @@
 {% endblock navbar_items %}
 {% block container %}
 
-    <div style="background-color: #E5E5E4; height: auto; padding: 1rem 2rem 1rem 2rem">
 
-        <div class="stats">
-            <div class="card card-simple card-solved card-info">Solved tasks <h1
-                    style="font-size: 5rem">{{ stats.solved_no }}<span
-                    style="font-size: 1rem">/{{ stats.saved_no }}</span></h1> That's
-                {{ stats.solved_ratio }}% of all
-                your saved tasks
+    <div class="stats">
+        <div class="card card-simple card-solved card-info">Solved tasks
+            <h1 class="main-text">
+                {{ stats.solved_no }}<span class="secondary-text">/{{ stats.saved_no }}</span>
+            </h1>
+            That's {{ stats.solved_ratio }}% of all your saved tasks
+        </div>
+        <div class="card card-simple card-unsolved card-info">Saved tasks
+            <h1 class="main-text">
+                {{ stats.saved_no }}<span class="secondary-text">/{{ stats.total_no }}</span>
+            </h1>
+            That's {{ stats.saved_ratio }}% of all available tasks
+        </div>
+        <div class="card card-simple card-tall card-solved">
+            Solved tasks spojs
+            <div id="container">
+                <canvas id="solved"></canvas>
             </div>
-            <div class="card card-simple card-unsolved card-info">Saved tasks <h1
-                    style="font-size: 5rem"><span class="nbr">{{ stats.saved_no }}</span><span
-                    style="font-size: 1rem">/<span class="nbr">{{ stats.total_no }}</span></span></h1>
-                That's {{ stats.saved_ratio }}% of all
-                available tasks
+        </div>
+        <div class="card card-simple card-tall card-unsolved">
+            Unsolved tasks spojs
+            <div id="container">
+                <canvas id="unsolved"></canvas>
             </div>
-            <div class="card card-simple card-tall card-solved">
-                Solved tasks spojs
-                <div id="container">
-                    <canvas id="solved"></canvas>
-                </div>
+        </div>
+        <div class="card card-wide-tall">Solved tasks
+            <div class="mx-auto solved-history" id="container">
+                <canvas id="solvedHistory"></canvas>
             </div>
-            <div class="card card-simple card-tall card-unsolved">
-                Unsolved tasks spojs
-                <div id="container">
-                    <canvas id="unsolved"></canvas>
-                </div>
-            </div>
-            <div class="card card-wide-tall d-flex justify-content-center align">Solved tasks
-                <div id="container" style="height: 85%; width: 95%">
-                    <canvas id="solvedHistory"></canvas>
-                </div>
-            </div>
-            <div class="card card-wide">
-                Task difficulty distribution
-                <div id="container">
-                    <canvas id="difficulty"></canvas>
-                </div>
+        </div>
+        <div class="card card-wide">
+            Task difficulty distribution
+            <div id="container">
+                <canvas id="difficulty"></canvas>
             </div>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
-    <script>
 
-        var data = {
-            labels: {{ solved_pie.spoj_names|safe }},
-            datasets: [{
-                data: {{ solved_pie.num_user_tasks|safe }},
-                backgroundColor: [
-                    'rgb(50, 205, 50)',
-                    'rgb(0, 128, 128)',
-                    'rgb(34, 139, 34)',
-                    'rgb(154, 205, 50)',
-                    'rgb(128, 128, 0)',
-                    'rgb(152, 255, 152)'
-                ],
-            }]
-        };
-        var ctx = document.getElementById('solved').getContext('2d');
-        var solvedPie = new Chart(ctx, {
-            type: 'pie',
-            data: data,
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-            }
-        });
-    </script>
-    <script>
-        var data = {
-            labels: {{ unsolved_pie.spoj_names|safe }},
-            datasets: [{
-                data: {{ unsolved_pie.num_user_tasks|safe }},
-                backgroundColor: [
-                    'rgb(255, 127, 80)',
-                    'rgb(255, 173, 51)',
-                    'rgb(255, 218, 185)',
-                    'rgb(204, 85, 0)',
-                    'rgb(251, 206, 177)',
-                    'rgb(218, 165, 32)'
-                ],
-            }]
-        };
-        var ctx = document.getElementById('unsolved').getContext('2d');
-        var solvedPie = new Chart(ctx, {
-            type: 'pie',
-            data: data,
-            options: {
-                responsive: true,
-                maintainAspectRatio: false
-            }
-        });
-    </script>
-    <script>
-        var solved_data = {{ histogram.solved_difficulty }};
-        var unsolved_data = {{ histogram.unsolved_difficulty }};
-
-        const binCount = 10;
-        const binSize = 1 / binCount;
-        const bins = Array.from({length: binCount}, (_, i) => i * binSize);
-
-        const solvedBinData = Array(binCount).fill(0);
-        solved_data.forEach(value => {
-            const binIndex = Math.floor(value / binSize);
-            solvedBinData[binIndex]++;
-        });
-        const unsolvedBinData = Array(binCount).fill(0);
-        unsolved_data.forEach(value => {
-            const binIndex = Math.floor(value / binSize);
-            unsolvedBinData[binIndex]++;
-        });
-
-        var ctx = document.getElementById('difficulty').getContext('2d');
-        var histogram = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: bins.map((bin, index) => `${(index * binSize).toFixed(1)} - ${((index + 1) * binSize).toFixed(1)}`),
-                datasets: [{
-                    label: 'unsolved',
-                    data: unsolvedBinData,
-                    backgroundColor: 'rgb(251, 206, 177)',
-                    borderColor: 'rgb(204, 85, 0)',
-                    borderWidth: 1
-                }, {
-                    label: 'solved',
-                    data: solvedBinData,
-                    backgroundColor: 'rgb(205,246,205)',
-                    borderColor: 'rgb(89,150,89)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        stacked: true,
-                    },
-                    x: {
-                        stacked: true,
-                    }
-                },
-                legend: {
-                    display: false
-                },
-            }
-        });
-    </script>
-    <script>
-
-        const dates = [{% for task in solved_tasks_dates %} new Date(Date.parse('{{ task }}')), {% endfor %}]
-
-        const dict = {}
-
-        for (let x = 0; x < dates.length; x++) {
-            if (dict[dates[x]]) {
-                dict[dates[x]]++;
-            } else {
-                dict[dates[x]] = 1;
-            }
-        }
-
-        const chartData = Object.entries(dict).map(([date, value], index) => ({
-            x: new Date(date),
-            y: index + value
-         }));
-
-        var ctx = document.getElementById('solvedHistory').getContext('2d');
-        var history = new Chart(ctx, {
-            type: 'line',
-            data: {
-                datasets: [{
-                    label: 'Tasks',
-                    data: chartData,
-                    borderColor: '#00AFA1',
-                    fill: false
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    x: {
-                        type: 'time',
-                        time: {
-                            unit: 'day'
-                        },
-                    },
-                }
-            }
-        });
-    </script>
+    {% include 'dashboard/charts.html' %}
 {% endblock container %}
 {% block scripts %}
     {{ block.super }}

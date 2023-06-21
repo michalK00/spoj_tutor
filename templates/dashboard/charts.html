@@ -1,0 +1,165 @@
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+<script>
+
+    var data = {
+        labels: {{ solved_pie.spoj_names|safe }},
+        datasets: [{
+            data: {{ solved_pie.num_user_tasks|safe }},
+            backgroundColor: [
+                'rgb(50, 205, 50)',
+                'rgb(0, 128, 128)',
+                'rgb(34, 139, 34)',
+                'rgb(154, 205, 50)',
+                'rgb(128, 128, 0)',
+                'rgb(152, 255, 152)'
+            ],
+        }]
+    };
+    var ctx = document.getElementById('solved').getContext('2d');
+    var solvedPie = new Chart(ctx, {
+        type: 'pie',
+        data: data,
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+        }
+    });
+</script>
+<script>
+    var data = {
+        labels: {{ unsolved_pie.spoj_names|safe }},
+        datasets: [{
+            data: {{ unsolved_pie.num_user_tasks|safe }},
+            backgroundColor: [
+                'rgb(255, 127, 80)',
+                'rgb(255, 173, 51)',
+                'rgb(255, 218, 185)',
+                'rgb(204, 85, 0)',
+                'rgb(251, 206, 177)',
+                'rgb(218, 165, 32)'
+            ],
+        }]
+    };
+    var ctx = document.getElementById('unsolved').getContext('2d');
+    var solvedPie = new Chart(ctx, {
+        type: 'pie',
+        data: data,
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
+</script>
+<script>
+    var solved_data = {{ histogram.solved_difficulty }};
+    var unsolved_data = {{ histogram.unsolved_difficulty }};
+
+    const binCount = 10;
+    const binSize = 1 / binCount;
+    const bins = Array.from({length: binCount}, (_, i) => i * binSize);
+
+    const solvedBinData = Array(binCount).fill(0);
+    solved_data.forEach(value => {
+        const binIndex = Math.floor(value / binSize);
+        solvedBinData[binIndex]++;
+    });
+    const unsolvedBinData = Array(binCount).fill(0);
+    unsolved_data.forEach(value => {
+        const binIndex = Math.floor(value / binSize);
+        unsolvedBinData[binIndex]++;
+    });
+
+    var ctx = document.getElementById('difficulty').getContext('2d');
+    var histogram = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: bins.map((bin, index) => `${(index * binSize).toFixed(1)} - ${((index + 1) * binSize).toFixed(1)}`),
+            datasets: [{
+                label: 'unsolved',
+                data: unsolvedBinData,
+                backgroundColor: 'rgb(251, 206, 177)',
+                borderColor: 'rgb(204, 85, 0)',
+                borderWidth: 1
+            }, {
+                label: 'solved',
+                data: solvedBinData,
+                backgroundColor: 'rgb(205,246,205)',
+                borderColor: 'rgb(89,150,89)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    stacked: true,
+                },
+                x: {
+                    stacked: true,
+                }
+            },
+            legend: {
+                display: false
+            },
+        }
+    });
+</script>
+<script>
+
+    const dates = [{% for task in solved_tasks_dates %} new Date(Date.parse('{{ task }}')), {% endfor %}]
+
+    const dict = {}
+
+    for (let x = 0; x < dates.length; x++) {
+        if (dict[dates[x]]) {
+            dict[dates[x]]++;
+        } else {
+            dict[dates[x]] = 1;
+        }
+    }
+    console.log(dict)
+    let chartData = Object.entries(dict).map(([date, value], index, entries) => {
+        let previousSum = 0;
+
+        for (let i = 0; i < index; i++) {
+            previousSum += entries[i][1];
+        }
+
+        return {
+            x: new Date(date),
+            y: value + previousSum
+        };
+    });
+    var ctx = document.getElementById('solvedHistory').getContext('2d');
+    var history = new Chart(ctx, {
+        type: 'line',
+        data: {
+            datasets: [{
+                label: 'Tasks',
+                data: chartData,
+                borderColor: '#00AFA1',
+                fill: false
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    type: 'time',
+                    time: {
+                        unit: 'day'
+                    },
+                },
+            },
+            plugins: {
+                legend: {
+                    display: false
+                }
+            }
+        }
+    });
+</script>
